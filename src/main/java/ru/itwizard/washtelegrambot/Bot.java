@@ -23,17 +23,15 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        SendMessage sendMessage;
+        long chat_id = update.getMessage().getChatId();
 
-        ReplyKeyboardMarkupBuilder replyKeyboardMarkupBuilder = new ReplyKeyboardMarkupBuilder();
-        sendMessage = replyKeyboardMarkupBuilder
-                .setText("Привет Некит")
+        SendMessage sendMessage = ReplyKeyboardMarkupBuilder.create(chat_id)
+                .setText("Тут мы ставим текст который отправляет вместе с клавой")
                 .row()
-                .button("Жопа")
-                .button("Некит")
+                .button("привет")
+                .button("пока")
                 .endRow()
                 .build();
-        sendMessage.setChatId(update.getMessage().getChatId());
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
@@ -53,7 +51,7 @@ public class Bot extends TelegramLongPollingBot {
                 sendMessage.setChatId(update.getMessage().getChatId());
         switch (update.getMessage().getText()){
             case "привет" :
-                sendMessage.setText(" Привет Бродяга");
+                sendMessage.setText("Привет Бродяга");
                 execute(sendMessage);
             case "пока" :
                 sendMessage.setText("Пока Бродяга");
