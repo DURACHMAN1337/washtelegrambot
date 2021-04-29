@@ -33,7 +33,7 @@ public class Customer extends AbstractEntityClass {
     String stateNumber;
 
     @Column(name = "auto_brand")
-    String brand;
+    Brands brand;
 
     @Column(name = "auto_model")
     String model;

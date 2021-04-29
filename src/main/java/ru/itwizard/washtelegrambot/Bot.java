@@ -3,10 +3,12 @@ package ru.itwizard.washtelegrambot;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+import ru.itwizard.washtelegrambot.Keyboards.InlineKeyboardMarkupBuilder;
 import ru.itwizard.washtelegrambot.Keyboards.ReplyKeyboardMarkupBuilder;
 
 public class Bot extends TelegramLongPollingBot {
@@ -23,28 +25,51 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        long chat_id = update.getMessage().getChatId();
-
-        SendMessage sendMessage = ReplyKeyboardMarkupBuilder.create(chat_id)
-                .setText("Тут мы ставим текст который отправляет вместе с клавой")
-                .row()
-                .button("привет")
-                .button("пока")
-                .endRow()
-                .build();
+    SendMessage sendMessage = new SendMessage();
+    sendMessage.setChatId(update.getMessage().getChatId());
         try {
-            execute(sendMessage);
+            execute(messageStarter(update.getMessage().getText(),sendMessage));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
 
-        try {
-            updateHandle(update);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+    }
+
+
+    public synchronized  SendMessage messageStarter(String text, SendMessage sendMessage){
+        long chat_id = Long.parseLong(sendMessage.getChatId());
+        switch (text){
+            case "/start":
+                sendMessage = ReplyKeyboardMarkupBuilder.create(chat_id)
+                        .setText("Доброго времени суток, вы находитесь на стартовой странице телеграм бота для записи" +
+                                "на услуги мойки чтобы начать пользоваться ботом нажмите кнопку /'Продолжить/' ")
+                        .row()
+                        .button("Продолжить")
+                        .endRow()
+                        .build();
+                break;
+
+            case "Продолжить":
+                sendMessage = ReplyKeyboardMarkupBuilder.create(chat_id)
+                        .setText("Вы находитесь в главном меню")
+                        .row()
+                        .button("Записатья на мойку")
+                        .endRow()
+                        .row()
+                        .button("Мои заказы")
+                        .button("Личный кабинет")
+                        .endRow()
+                        .row()
+                        .button("Информация")
+                        .endRow()
+                        .build();
+
+                break;
+
         }
 
 
+        return sendMessage;
     }
     public synchronized void updateHandle(Update update) throws TelegramApiException {
                 SendMessage sendMessage = new SendMessage();
