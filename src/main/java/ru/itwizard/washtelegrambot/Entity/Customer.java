@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -14,34 +15,40 @@ import javax.persistence.Table;
 @Data
 public class Customer extends AbstractEntityClass {
 
-    @NotNull
-    @Column(name = "firstname")
-    String firstname;
+    @Id
+    @Column(name = "userID")
+    private Long userId;
 
     @NotNull
-    @Column(name = "userID")
-    String userId;
+    @Column(name = "firstname")
+    private String firstname;
 
     @NotNull
     @Column(name = "username")
-    String username;
+    private String username;
 
     @Column(name = "telephone")
-    String telephone;
+    private String telephone;
 
     @Column(name = "state_number")
-    String stateNumber;
+    private String stateNumber;
 
     @Column(name = "auto_brand")
-    Brands brand;
+    private Brands brand;
 
     @Column(name = "auto_model")
-    String model;
+    private String model;
 
+    public Customer() {
+    }
 
-
-
-
-
-
+    public Customer(String firstname, Long userId, String username, String telephone, String stateNumber, Brands brand, String model) {
+        this.firstname = firstname;
+        this.userId = userId;
+        this.username = username;
+        this.telephone = telephone;
+        this.stateNumber = stateNumber;
+        this.brand = brand;
+        this.model = model;
+    }
 }

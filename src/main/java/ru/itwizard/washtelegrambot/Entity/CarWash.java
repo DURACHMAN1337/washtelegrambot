@@ -4,9 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -15,15 +13,19 @@ import javax.persistence.Table;
 @Data
 public class CarWash extends AbstractEntityClass {
 
-    @NotNull
-    @Column(name = "car_wash_id")
-    String carWashId;
+    @Id
+    @GeneratedValue
+    Long carWashId;
 
+    @Column(name = "addres")
     String address;
 
+    @Column(name = "telephone")
     String telephone;
 
-    TimeTable timeTable;
+
+
+
 
 
 }
